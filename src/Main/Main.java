@@ -1,8 +1,12 @@
 package Main;
 
 import javafx.application.Application;
+// import javafx.fxml.FXMLLoader;
+// import javafx.scene.Parent;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -12,12 +16,22 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+
+
 
 public class Main extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+    /*@Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("../FXMLs/firstMenu.fxml"));
+        stage.setTitle("Bob Ross");
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.show();
+    }*/
 
     @Override
     public void start(Stage stage) throws Exception {
