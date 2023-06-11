@@ -1,0 +1,8 @@
+
+w
+java:S1450	"URemove the "legend" field and declare it as a local variable in the relevant methods.(·Ê¯êùÿÿÿÿ8õÍØÚŠ1
+L
+java:S1068	"*Remove this unused "legend" private field.(·Ê¯êùÿÿÿÿ8ğĞÚŠ1
+O
+java:S1068
+"-Remove this unused "tileState" private field.(Ú‚îşÿÿÿÿ8ğĞÚŠ1
