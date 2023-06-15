@@ -10,7 +10,6 @@ public class Utilities {
 
     public static int[][] generateBoard(String nonogramPath) {
         int[][] board = new int[0][0];
-        nonogramPath = ClassLoader.getSystemResource(nonogramPath).getPath();
 
         try (BufferedReader br = new BufferedReader(new FileReader(nonogramPath))) {
             String[] lines = br.lines().toArray(String[]::new);
