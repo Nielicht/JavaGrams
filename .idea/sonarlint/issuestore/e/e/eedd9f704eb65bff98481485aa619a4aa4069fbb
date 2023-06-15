@@ -1,8 +1,5 @@
 
-w
-java:S1450	"URemove the "legend" field and declare it as a local variable in the relevant methods.(·Ê¯êùÿÿÿÿ8õÍØÚŠ1
-L
-java:S1068	"*Remove this unused "legend" private field.(·Ê¯êùÿÿÿÿ8ğĞÚŠ1
-O
-java:S1068
-"-Remove this unused "tileState" private field.(Ú‚îşÿÿÿÿ8ğĞÚŠ1
+i
+java:S1226"LIntroduce a new variable instead of reusing the parameter "cellStateColumn".(²ÅÛ8òÚÂæ‹1
+Q
+java:S1481"4Remove this unused "cellStateColumn" local variable.(°ğ 8ùÚÂæ‹1

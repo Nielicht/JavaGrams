@@ -2,49 +2,49 @@ package logic;
 
 import java.io.*;
 
-public class Conversor {\
+public class Utilities {
 
-    private Conversor() {
+    private Utilities() {
         throw new IllegalStateException("Utility class");
     }
 
-    // 0 3 3 2 5
-    //
-    // 0 0 1 0 1    2
-    // 0 1 0 0 1    2
-    // 0 1 1 0 1    3
-    // 0 0 0 1 1    2
-    // 0 1 1 1 1    4
-
     public static int[][] generateBoard(String nonogramPath) {
         int[][] board = new int[0][0];
+        nonogramPath = ClassLoader.getSystemResource(nonogramPath).getPath();
 
         try (BufferedReader br = new BufferedReader(new FileReader(nonogramPath))) {
-            String line;
-            int columns = 0;
-            int currentColumns = 0;
-            int rows = 0;
+            String[] lines = br.lines().toArray(String[]::new);
+
+            int rows = lines.length;
+            int columns = lines[0].length();
+            board = new int[rows][columns];
+
+            int x = -1;
+            int y = -1;
             int number;
 
-            while ((line = br.readLine()) != null) {
-                rows++;
-                if (columns == 0) columns = line.length();
-                else if ((currentColumns = line.length()) != columns)
-                    throw new NumberFormatException("What in tarnation");
+            for (String line : lines) {
+                y++;
 
+                // Checks that the number of columns is coherent
+                if (line.length() != columns) throw new NumberFormatException("Columns in file are not coherent");
+
+                // Processes lines in a nonogram file
                 for (char numberChar : line.toCharArray()) {
+                    x++;
                     number = Character.getNumericValue(numberChar);
 
                     switch (number) {
-                        default -> throw new NumberFormatException("File contains non-expected number");
-                        case -1 -> throw new NumberFormatException("File contains non-number characters");
-                        case 0 ->
-                        case 1 ->
+                        case 1 -> board[y][x] = 1;
+                        case 0 -> board[y][x] = 0;
+                        default -> throw new NumberFormatException("File contains non-expected value");
                     }
                 }
+                x = -1;
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
         }
 
         return board;
