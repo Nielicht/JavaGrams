@@ -1,5 +1,7 @@
 
-Z	java:S106"9Replace this use of System.out or System.err by a logger.(ÜŸ¾‡øÿÿÿÿ8ÕÎÁ„Œ1
-Z	java:S106"9Replace this use of System.out or System.err by a logger.(Î„†Ÿùÿÿÿÿ8ÕÎÁ„Œ1
-U	java:S106"9Replace this use of System.out or System.err by a logger.(ÿìÍ8ÚÎÁ„Œ1
-Z	java:S106>"9Replace this use of System.out or System.err by a logger.(åö¡½úÿÿÿÿ8˜—Å„Œ1
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(ÜŸ¾‡øÿÿÿÿ8ãâ×¼’1
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(Î„†Ÿùÿÿÿÿ8äâ×¼’1
+U	java:S106"9Replace this use of System.out or System.err by a logger.(ÿìÍ8äâ×¼’1
+o
+java:S3776)"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ıÈ½8èâ×¼’1
+Z	java:S106J"9Replace this use of System.out or System.err by a logger.(åö¡½úÿÿÿÿ8êâ×¼’1

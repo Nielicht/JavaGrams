@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Utilities {
 
@@ -49,18 +50,77 @@ public class Utilities {
         return board;
     }
 
-    public static int[] generateLegend(int[][] board) {
-        int[] legend = new int[board.length + board[0].length];
+    public static int[][] generateLegend(int[][] board) {
+        // Setup
+        ArrayList<ArrayList<Integer>> listWithLegends = new ArrayList<>();
+        int nColumns = board[0].length;
+        int nRows = board.length;
+        int sum = 0;
 
-        for (int y = 0; y < board.length; y++) {
-            for (int x = 0; x < board[y].length; x++) {
-                if (board[y][x] == 1) {
-                    legend[x]++;
-                    legend[board[x].length + y]++;
+        // Arraylist setup
+        for (int i = 0; i < nRows + nColumns; i++) {
+            listWithLegends.add(new ArrayList<>());
+        }
+
+        // Rows legend calculation
+        for (int y = 0; y < nRows; y++) {
+            for (int x = 0; x < nColumns; x++) {
+                switch (board[y][x]) {
+                    case 1 -> {
+                        sum++;
+                        if (x == nColumns - 1 && sum != 0) {
+                            listWithLegends.get(y).add(sum);
+                            sum = 0;
+                        }
+                    }
+                    case 0 -> {
+                        if (sum != 0) {
+                            listWithLegends.get(y).add(sum);
+                            sum = 0;
+                        }
+                    }
+                    default -> throw new IllegalStateException("Unexpected value: " + board[y][x]);
                 }
             }
         }
 
-        return legend;
+        // Columns legend calculation
+        for (int x = 0; x < nColumns; x++) {
+            for (int y = 0; y < nRows; y++) {
+                switch (board[y][x]) {
+                    case 1 -> {
+                        sum++;
+                        if (y == nRows - 1 && sum != 0) {
+                            listWithLegends.get(nRows + x).add(0, sum);
+                            sum = 0;
+                        }
+                    }
+                    case 0 -> {
+                        if (sum != 0) {
+                            listWithLegends.get(nRows + x).add(0, sum);
+                            sum = 0;
+                        }
+                    }
+                    default -> throw new IllegalStateException("Unexpected value: " + board[y][x]);
+                }
+            }
+        }
+
+        // Conversion from ArrayList of Arraylists of integer wrappers (Integer) to an array of arrays of primitive ints
+        int[][] finalLegend = new int[listWithLegends.size()][];
+        int[] finalRow;
+        for (int row = 0; row < listWithLegends.size(); row++) {
+            ArrayList<Integer> rowInList = listWithLegends.get(row);
+            finalRow = new int[rowInList.size()];
+
+            for (int rowIndex = 0; rowIndex < rowInList.size(); rowIndex++) {
+                finalRow[rowIndex] = rowInList.get(rowIndex);
+            }
+
+            finalLegend[row] = finalRow;
+        }
+
+        // Return of calculated legend
+        return finalLegend;
     }
 }

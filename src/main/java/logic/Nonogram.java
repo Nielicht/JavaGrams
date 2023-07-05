@@ -8,7 +8,7 @@ enum CellState {
 
 public class Nonogram {
     private int[][] board;
-    private int[] legend;
+    private int[][] legend;
     private CellState[][] cellState;
 
     public Nonogram(String path) {
@@ -39,7 +39,7 @@ public class Nonogram {
         return board;
     }
 
-    public int[] getLegend() {
+    public int[][] getLegend() {
         return legend;
     }
 
@@ -51,14 +51,14 @@ public class Nonogram {
         return this.board.length;
     }
 
-    public int[] getRowsLegend() {
+    public int[][] getRowsLegend() {
         int nRows = this.getRows();
-        return Arrays.copyOfRange(this.legend, nRows, this.legend.length);
+        return Arrays.copyOfRange(this.legend, 0, nRows);
     }
 
-    public int[] getColumnsLegend() {
-        int nColumns = this.getColumns();
-        return Arrays.copyOfRange(this.legend, 0, nColumns);
+    public int[][] getColumnsLegend() {
+        int nRows = this.getRows();
+        return Arrays.copyOfRange(this.legend, nRows, this.legend.length);
     }
 
     public CellState[][] getCellState() {
@@ -75,27 +75,18 @@ public class Nonogram {
 
         for (int[] row : board) {
             sb.append("\n");
-            for (int column : row) {
-                sb.append(column);
+            for (int valueAtRow : row) {
+                sb.append(valueAtRow);
             }
         }
 
         sb.append("\n\nRaw legend variable: ");
 
-        for (int legendNumber : legend) {
-            sb.append(legendNumber);
-        }
-
-        int[] columnsLegend = this.getColumnsLegend();
-        sb.append("\nLegend for columns: ");
-        for (int column : columnsLegend) {
-            sb.append(column);
-        }
-
-        int[] rowsLegend = this.getRowsLegend();
-        sb.append("\nLegend for rows: ");
-        for (int row : rowsLegend) {
-            sb.append(row);
+        for (int[] row : legend) {
+            sb.append("\n");
+            for (int valueAtRow : row) {
+                sb.append(valueAtRow + " ");
+            }
         }
 
         return sb.toString();

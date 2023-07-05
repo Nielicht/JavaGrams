@@ -42,12 +42,21 @@ public class CLIPlayer {
         StringBuilder sb = new StringBuilder("\n");
         CellState[][] currentBoard = ng.getCellState();
 
-        for (int column : ng.getColumnsLegend()) {
-            sb.append(column + " ");
+        int[][] columnsLegend = ng.getColumnsLegend();
+        int biggest = 0;
+        for (int[] column : columnsLegend) if (column.length > biggest) biggest = column.length;
+        for (int currentHeight = biggest; currentHeight > 0; currentHeight--) {
+            for (int[] column : columnsLegend) {
+                if (column.length >= currentHeight) {
+                    sb.append(column[currentHeight - 1] + " ");
+                } else {
+                    sb.append("  ");
+                }
+            }
+            sb.append("\n");
         }
-        sb.deleteCharAt(sb.length() - 1);
 
-        sb.append("\n");
+        int[][] rowsLegend = ng.getRowsLegend();
         for (int y = 0; y < currentBoard.length; y++) {
             for (int x = 0; x < currentBoard[y].length; x++) {
                 switch (currentBoard[y][x]) {
@@ -56,7 +65,10 @@ public class CLIPlayer {
                     case CROSSED -> sb.append("⊠ ");
                 }
             }
-            sb.append(" " + ng.getRowsLegend()[y] + "\n");
+            for (int value : rowsLegend[y]) {
+                sb.append(value + " ");
+            }
+            sb.append("\n");
         }
 
         System.out.println(sb.toString());
