@@ -1,41 +1,57 @@
 package logic;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 public class CLIPlayer {
     public static void main(String[] args) throws IOException {
+        // Nonogram generation
         String path = ClassLoader.getSystemResource("nFiles/test.txt").getPath();
-        Nonogram nonogram = new Nonogram(path); // Note: it breaks with non-square matrices :(
+        Nonogram nonogram = new Nonogram(path);
 
+        // CLI Player
+        displayWelcomeMessage();
         while (!nonogram.isSolved()) {
             drawBoard(nonogram);
             getInput(nonogram);
         }
 
+        // Completed screen
         drawBoard(nonogram);
         System.out.println("Nonogram solved!");
     }
 
     private static void getInput(Nonogram ng) throws IOException {
-        System.out.println("Press f (fill), b (blank) or x (crossed), then input coordinates separated by commas");
-        System.out.println("For example: f2,3\n");
-
+        // Input retrieval
+        char[] inputs = new char[3]; // [0] for coordinate "x", [1] for coordinate "y" and [2] reserved for special operation (if any)
         Scanner sc = new Scanner(System.in);
-        StringBuilder input = new StringBuilder(sc.nextLine());
-        char action = Character.toLowerCase(input.charAt(0));
-        input.deleteCharAt(0);
+        for (int i = 0; i < 2; i++) {
+            inputs[i] = sc.nextLine().charAt(0);
 
-        String[] coordinates = input.toString().split(",");
-        int x = Integer.parseInt(coordinates[0]) - 1;
-        int y = Integer.parseInt(coordinates[1]) - 1;
-        switch (action) {
-            case 'f' -> ng.transaction(x, y, CellState.FILLED);
+            // If a letter is retrieved, it is stored in the special operation index [2]
+            if (Character.isLetter(inputs[i])) {
+                inputs[2] = inputs[i];
+                i = -1; // Reset the loop
+            }
+        }
+
+        // Data adaptation
+        int x = Character.getNumericValue(inputs[0]) - 1;
+        int y = Character.getNumericValue(inputs[1]) - 1;
+        char operation = inputs[2];
+
+        // Operation execution
+        switch (operation) {
             case 'b' -> ng.transaction(x, y, CellState.HOLLOW);
             case 'x' -> ng.transaction(x, y, CellState.CROSSED);
-            default -> throw new UnsupportedEncodingException("What");
+            default -> ng.transaction(x, y, CellState.FILLED);
         }
+    }
+
+    private static void displayWelcomeMessage() {
+        System.out.println("\nEnter the coordinates, one for each (Enter) press.");
+        System.out.println("You can enter a special letter in any given moment to change the final outcome: (b) for blank, (x) to cross, (any) for standard fill.");
+        System.out.println("Note that entering any letter will drop any already given coordinate.");
     }
 
     private static void drawBoard(Nonogram ng) {

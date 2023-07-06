@@ -21,7 +21,11 @@ public class Nonogram {
     }
 
     public void transaction(int x, int y, CellState state) {
-        this.cellState[y][x] = state;
+        try {
+            this.cellState[y][x] = state;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("\nThe coordinate does not exist");
+        }
     }
 
     public boolean isSolved() {
