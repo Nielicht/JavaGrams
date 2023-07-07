@@ -1,32 +1,64 @@
-package logic;
+package cli;
+
+import IO.FileSystem;
+import IO.KeyboardInput;
+import logic.CurrentBoard;
+import logic.Nonogram;
 
 import java.io.IOException;
-import java.util.Scanner;
+import java.nio.file.Path;
 
 public class CLIPlayer {
     public static void main(String[] args) throws IOException {
         // Nonogram generation
-        String path = ClassLoader.getSystemResource("nFiles/test.txt").getPath();
-        Nonogram nonogram = new Nonogram(path);
+        Nonogram ng = getNonogramFromSelection();
 
-        // CLI Player
+        // Initiate game
         displayWelcomeMessage();
-        while (!nonogram.isSolved()) {
-            drawBoard(nonogram);
-            getInput(nonogram);
-        }
+        playGame(ng);
 
-        // Completed screen
-        drawBoard(nonogram);
+        // Solved screen
+        drawBoard(ng);
         System.out.println("Nonogram solved!");
     }
 
-    private static void getInput(Nonogram ng) throws IOException {
-        // Input retrieval
+    private static Nonogram getNonogramFromSelection() throws IOException {
+        Path[] paths = FileSystem.getFPathsFromDirectory("nFiles/");
+        String[] choices = new String[paths.length];
+
+        if (paths.length == 0) {
+            System.out.println("There are no files!");
+            System.exit(1);
+        }
+
+        for (int i = 0; i < choices.length; i++) {
+            choices[i] = (i + 1) + ". " + paths[i].getFileName().toString();
+        }
+
+        System.out.println("Select the file with the desired nonogram:\n");
+        for (String choice : choices) {
+            System.out.println(choice);
+        }
+
+        System.out.print("\nChoice: ");
+
+        String selection = paths[KeyboardInput.getInt() - 1].toString();
+        Nonogram ng = new Nonogram(selection);
+        return ng;
+    }
+
+    private static void playGame(Nonogram ng) {
+        while (!ng.isSolved()) {
+            drawBoard(ng);
+            getInputAndExecute(ng);
+        }
+    }
+
+    private static void getInputAndExecute(Nonogram ng) {
+        // KeyboardInput retrieval
         char[] inputs = new char[3]; // [0] for coordinate "x", [1] for coordinate "y" and [2] reserved for special operation (if any)
-        Scanner sc = new Scanner(System.in);
         for (int i = 0; i < 2; i++) {
-            inputs[i] = sc.nextLine().charAt(0);
+            inputs[i] = KeyboardInput.getChar();
 
             // If a letter is retrieved, it is stored in the special operation index [2]
             if (Character.isLetter(inputs[i])) {
@@ -41,10 +73,14 @@ public class CLIPlayer {
         char operation = inputs[2];
 
         // Operation execution
+        executeOperation(ng, x, y, operation);
+    }
+
+    public static void executeOperation(Nonogram ng, int x, int y, char operation) {
         switch (operation) {
-            case 'b' -> ng.transaction(x, y, CellState.HOLLOW);
-            case 'x' -> ng.transaction(x, y, CellState.CROSSED);
-            default -> ng.transaction(x, y, CellState.FILLED);
+            case 'b' -> ng.transaction(x, y, CurrentBoard.HOLLOW);
+            case 'x' -> ng.transaction(x, y, CurrentBoard.CROSSED);
+            default -> ng.transaction(x, y, CurrentBoard.FILLED);
         }
     }
 
@@ -52,11 +88,13 @@ public class CLIPlayer {
         System.out.println("\nEnter the coordinates, one for each (Enter) press.");
         System.out.println("You can enter a special letter in any given moment to change the final outcome: (b) for blank, (x) to cross, (any) for standard fill.");
         System.out.println("Note that entering any letter will drop any already given coordinate.");
+        System.out.println("\nPress any key to continue...");
+        KeyboardInput.getString();
     }
 
     private static void drawBoard(Nonogram ng) {
         StringBuilder sb = new StringBuilder("\n");
-        CellState[][] currentBoard = ng.getCellState();
+        CurrentBoard[][] currentBoard = ng.getCellState();
 
         int[][] columnsLegend = ng.getColumnsLegend();
         int biggest = 0;

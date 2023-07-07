@@ -2,27 +2,23 @@ package logic;
 
 import java.util.Arrays;
 
-enum CellState {
-    HOLLOW, FILLED, CROSSED
-}
-
 public class Nonogram {
     private int[][] board;
     private int[][] legend;
-    private CellState[][] cellState;
+    private CurrentBoard[][] currentBoard;
 
     public Nonogram(String path) {
-        this.board = Utilities.generateBoard(path);
-        this.legend = Utilities.generateLegend(this.board);
-        this.cellState = new CellState[this.board.length][this.board[0].length];
-        for (CellState[] cellStates : this.cellState) {
-            Arrays.fill(cellStates, CellState.HOLLOW);
+        this.board = NonogramUtilities.generateBoard(path);
+        this.legend = NonogramUtilities.generateLegend(this.board);
+        this.currentBoard = new CurrentBoard[this.board.length][this.board[0].length];
+        for (CurrentBoard[] currentBoards : this.currentBoard) {
+            Arrays.fill(currentBoards, CurrentBoard.HOLLOW);
         }
     }
 
-    public void transaction(int x, int y, CellState state) {
+    public void transaction(int x, int y, CurrentBoard state) {
         try {
-            this.cellState[y][x] = state;
+            this.currentBoard[y][x] = state;
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("\nThe coordinate does not exist");
         }
@@ -31,7 +27,7 @@ public class Nonogram {
     public boolean isSolved() {
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board[y].length; x++) {
-                if (board[y][x] == 1 && (this.cellState[y][x] == CellState.CROSSED || this.cellState[y][x] == CellState.HOLLOW))
+                if (board[y][x] == 1 && (this.currentBoard[y][x] == CurrentBoard.CROSSED || this.currentBoard[y][x] == CurrentBoard.HOLLOW))
                     return false;
             }
         }
@@ -65,12 +61,12 @@ public class Nonogram {
         return Arrays.copyOfRange(this.legend, nRows, this.legend.length);
     }
 
-    public CellState[][] getCellState() {
-        return cellState;
+    public CurrentBoard[][] getCellState() {
+        return currentBoard;
     }
 
-    public CellState getCellState(int x, int y) {
-        return this.cellState[y][x];
+    public CurrentBoard getCellState(int x, int y) {
+        return this.currentBoard[y][x];
     }
 
     @Override

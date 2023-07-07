@@ -1,18 +1,20 @@
 package logic;
 
-import java.io.*;
+import IO.FileSystem;
+
+import java.io.BufferedReader;
 import java.util.ArrayList;
 
-public class Utilities {
+public class NonogramUtilities {
 
-    private Utilities() {
+    private NonogramUtilities() {
         throw new IllegalStateException("Utility class");
     }
 
     public static int[][] generateBoard(String nonogramPath) {
         int[][] board = new int[0][0];
 
-        try (BufferedReader br = new BufferedReader(new FileReader(nonogramPath))) {
+        try (BufferedReader br = FileSystem.getBReaderFromPath(nonogramPath)) {
             String[] lines = br.lines().toArray(String[]::new);
 
             int rows = lines.length;
