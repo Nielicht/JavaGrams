@@ -5,20 +5,20 @@ import java.util.Arrays;
 public class Nonogram {
     private int[][] board;
     private int[][] legend;
-    private CurrentBoard[][] currentBoard;
+    private Tiles[][] tiles;
 
     public Nonogram(String path) {
         this.board = NonogramUtilities.generateBoard(path);
         this.legend = NonogramUtilities.generateLegend(this.board);
-        this.currentBoard = new CurrentBoard[this.board.length][this.board[0].length];
-        for (CurrentBoard[] currentBoards : this.currentBoard) {
-            Arrays.fill(currentBoards, CurrentBoard.HOLLOW);
+        this.tiles = new Tiles[this.board.length][this.board[0].length];
+        for (Tiles[] tile : this.tiles) {
+            Arrays.fill(tile, Tiles.HOLLOW);
         }
     }
 
-    public void transaction(int x, int y, CurrentBoard state) {
+    public void transaction(int x, int y, Tiles state) {
         try {
-            this.currentBoard[y][x] = state;
+            this.tiles[y][x] = state;
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("\nThe coordinate does not exist");
         }
@@ -27,7 +27,7 @@ public class Nonogram {
     public boolean isSolved() {
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board[y].length; x++) {
-                if (board[y][x] == 1 && (this.currentBoard[y][x] == CurrentBoard.CROSSED || this.currentBoard[y][x] == CurrentBoard.HOLLOW))
+                if (board[y][x] == 1 && (this.tiles[y][x] == Tiles.CROSSED || this.tiles[y][x] == Tiles.HOLLOW))
                     return false;
             }
         }
@@ -61,12 +61,12 @@ public class Nonogram {
         return Arrays.copyOfRange(this.legend, nRows, this.legend.length);
     }
 
-    public CurrentBoard[][] getCellState() {
-        return currentBoard;
+    public Tiles[][] getTileState() {
+        return tiles;
     }
 
-    public CurrentBoard getCellState(int x, int y) {
-        return this.currentBoard[y][x];
+    public Tiles getTileState(int x, int y) {
+        return this.tiles[y][x];
     }
 
     @Override

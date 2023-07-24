@@ -1,5 +1,5 @@
 package logic;
 
-public enum CurrentBoard {
+public enum Tiles {
     HOLLOW, FILLED, CROSSED
 }

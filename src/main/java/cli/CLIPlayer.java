@@ -2,7 +2,7 @@ package cli;
 
 import IO.FileSystem;
 import IO.KeyboardInput;
-import logic.CurrentBoard;
+import logic.Tiles;
 import logic.Nonogram;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class CLIPlayer {
     }
 
     private static Nonogram getNonogramFromSelection() throws IOException {
-        Path[] paths = FileSystem.getFPathsFromDirectory("nFiles/");
+        Path[] paths = FileSystem.getFPathsFromResourceFolder("nFiles/");
         String[] choices = new String[paths.length];
 
         if (paths.length == 0) {
@@ -78,9 +78,9 @@ public class CLIPlayer {
 
     public static void executeOperation(Nonogram ng, int x, int y, char operation) {
         switch (operation) {
-            case 'b' -> ng.transaction(x, y, CurrentBoard.HOLLOW);
-            case 'x' -> ng.transaction(x, y, CurrentBoard.CROSSED);
-            default -> ng.transaction(x, y, CurrentBoard.FILLED);
+            case 'b' -> ng.transaction(x, y, Tiles.HOLLOW);
+            case 'x' -> ng.transaction(x, y, Tiles.CROSSED);
+            default -> ng.transaction(x, y, Tiles.FILLED);
         }
     }
 
@@ -94,7 +94,7 @@ public class CLIPlayer {
 
     private static void drawBoard(Nonogram ng) {
         StringBuilder sb = new StringBuilder("\n");
-        CurrentBoard[][] currentBoard = ng.getCellState();
+        Tiles[][] tiles = ng.getTileState();
 
         int[][] columnsLegend = ng.getColumnsLegend();
         int biggest = 0;
@@ -111,9 +111,9 @@ public class CLIPlayer {
         }
 
         int[][] rowsLegend = ng.getRowsLegend();
-        for (int y = 0; y < currentBoard.length; y++) {
-            for (int x = 0; x < currentBoard[y].length; x++) {
-                switch (currentBoard[y][x]) {
+        for (int y = 0; y < tiles.length; y++) {
+            for (int x = 0; x < tiles[y].length; x++) {
+                switch (tiles[y][x]) {
                     case HOLLOW -> sb.append("□ ");
                     case FILLED -> sb.append("▣ ");
                     case CROSSED -> sb.append("⊠ ");

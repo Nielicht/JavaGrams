@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -13,21 +14,29 @@ public class FileSystem {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Path[] getFPathsFromDirectory(String dPath) throws IOException {
-        try (Stream<Path> list = Files.list(Path.of(ClassLoader.getSystemResource(dPath).getPath()))) {
+    public static Path[] getFPathsFromResourceFolder(String folderRelPath) throws IOException {
+        try (Stream<Path> list = Files.list(getResourcePath(folderRelPath))) {
             return list.sorted().toArray(Path[]::new);
         }
     }
 
-    public static String getResourceSPath(String fPath) {
-        return ClassLoader.getSystemResource(fPath).getPath();
+    public static URL getResourceURL(String relativePath) {
+        return ClassLoader.getSystemResource(relativePath);
     }
 
-    public static BufferedReader getBReaderFromResource(String rPath) throws FileNotFoundException {
-        return getBReaderFromPath(getResourceSPath(rPath));
+    public static String getResourceString(String relativePath) {
+        return getResourceURL(relativePath).getPath();
     }
 
-    public static BufferedReader getBReaderFromPath(String fPath) throws FileNotFoundException {
-        return new BufferedReader(new FileReader(fPath));
+    public static Path getResourcePath(String relativePath) {
+        return Path.of(getResourceString(relativePath));
+    }
+
+    public static BufferedReader getBReaderFromResource(String relativePath) throws FileNotFoundException {
+        return getBReaderFromPath(getResourceString(relativePath));
+    }
+
+    public static BufferedReader getBReaderFromPath(String absolutePath) throws FileNotFoundException {
+        return new BufferedReader(new FileReader(absolutePath));
     }
 }

@@ -1,0 +1,10 @@
+.button {
+    -fx-background-color: transparent;
+    -fx-graphic: url('images/blank.png');
+}
+
+.gridpane {
+    -fx-alignment: center;
+    -fx-vgap: 0;
+    -fx-hgap: 0;
+}
