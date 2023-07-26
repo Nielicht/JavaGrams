@@ -1,6 +1,13 @@
-.button {
-    -fx-background-color: transparent;
+.buttonBlank {
     -fx-graphic: url('images/blank.png');
+}
+
+.buttonFilled {
+    -fx-graphic: url('images/filled.png');
+}
+
+.buttonCrossed {
+    -fx-graphic: url('images/crossed.png');
 }
 
 .gridpane {

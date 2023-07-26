@@ -4,6 +4,7 @@ import IO.FileSystem;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -23,8 +24,8 @@ public class GUIPlayer extends Application {
         logicSetup();
         primaryStage.setTitle("Nonogram");
         primaryStage.setResizable(false);
-        primaryStage.setWidth(1280);
-        primaryStage.setHeight(720);
+        primaryStage.setWidth(400);
+        primaryStage.setHeight(400);
         Scene scene = new Scene(setupGrid());
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -40,8 +41,40 @@ public class GUIPlayer extends Application {
         gp.getStylesheets().add("css/tiles.css");
         gp.getStyleClass().add("gridpane");
         poblateGrid(gp);
+        setupButtons();
         System.out.println("Number of rows " + gp.getRowCount() + " ; Number of columns: " + gp.getColumnCount());
         return gp;
+    }
+
+    private void setupButtons() {
+        for (Button[] tileRow : tiles) {
+            for (Button tile : tileRow) {
+                tile.getStyleClass().clear();
+                tile.getStyleClass().add("buttonBlank");
+                tile.setOnMouseClicked(mouseEvent -> {
+                    if (tile.getStyleClass().size() > 1) throw new RuntimeException("Too many style classes");
+                    String style = tile.getStyleClass().get(0);
+                    String finalStyle = "buttonBlank";
+                    MouseButton mouseButton = mouseEvent.getButton();
+
+                    switch (mouseButton) {
+                        case PRIMARY -> {
+                            if (style.equals("buttonBlank") || style.equals("buttonCrossed")) finalStyle = "buttonFilled";
+                        }
+                        case SECONDARY -> {
+                            if (style.equals("buttonBlank") || style.equals("buttonFilled")) finalStyle = "buttonCrossed";
+                        }
+                        default -> {
+                            System.out.println("Not this button DUMBASS");
+                            return;
+                        }
+                    }
+
+                    tile.getStyleClass().clear();
+                    tile.getStyleClass().add(finalStyle);
+                });
+            }
+        }
     }
 
     private void poblateGrid(GridPane gp) {
