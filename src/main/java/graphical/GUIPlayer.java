@@ -2,18 +2,24 @@ package graphical;
 
 import IO.FileSystem;
 import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.Nonogram;
+import logic.Tiles;
 
 public class GUIPlayer extends Application {
     private Nonogram nonogram;
     private Button[][] tiles;
+    private Stage mainStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -21,19 +27,23 @@ public class GUIPlayer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        logicSetup();
-        primaryStage.setTitle("Nonogram");
-        primaryStage.setResizable(false);
-        primaryStage.setWidth(400);
-        primaryStage.setHeight(400);
-        Scene scene = new Scene(setupGrid());
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        logicSetup(primaryStage);
+        this.mainStage.setTitle("Nonogram");
+        this.mainStage.setResizable(false);
+        this.mainStage.setWidth(400);
+        this.mainStage.setHeight(400);
+        this.mainStage.setScene(new Scene(setupGrid()));
+        this.mainStage.show();
     }
 
-    private void logicSetup() {
+    private void changeScene(Parent root) {
+        this.mainStage.getScene().setRoot(root);
+    }
+
+    private void logicSetup(Stage primaryStage) {
         this.nonogram = new Nonogram(FileSystem.getResourceString("nFiles/test1.txt"));
         this.tiles = new Button[this.nonogram.getRows()][this.nonogram.getColumns()];
+        this.mainStage = primaryStage;
     }
 
     private GridPane setupGrid() {
@@ -59,10 +69,12 @@ public class GUIPlayer extends Application {
 
                     switch (mouseButton) {
                         case PRIMARY -> {
-                            if (style.equals("buttonBlank") || style.equals("buttonCrossed")) finalStyle = "buttonFilled";
+                            if (style.equals("buttonBlank") || style.equals("buttonCrossed"))
+                                finalStyle = "buttonFilled";
                         }
                         case SECONDARY -> {
-                            if (style.equals("buttonBlank") || style.equals("buttonFilled")) finalStyle = "buttonCrossed";
+                            if (style.equals("buttonBlank") || style.equals("buttonFilled"))
+                                finalStyle = "buttonCrossed";
                         }
                         default -> {
                             System.out.println("Not this button DUMBASS");
@@ -72,23 +84,50 @@ public class GUIPlayer extends Application {
 
                     tile.getStyleClass().clear();
                     tile.getStyleClass().add(finalStyle);
+                    gameUpdate(tile.getId(), finalStyle);
                 });
             }
         }
     }
 
+    private void gameUpdate(String id, String finalStyle) {
+        int x = Integer.parseInt(id.split(":")[0]);
+        int y = Integer.parseInt(id.split(":")[1]);
+
+        this.nonogram.transaction(x, y, styleToTile(finalStyle));
+
+        if (this.nonogram.isSolved()) triggerEnding();
+    }
+
+    private void triggerEnding() {
+        BorderPane bp = new BorderPane(new Text("YOU WON!"));
+        changeScene(bp);
+    }
+
+    private Tiles styleToTile(String finalStyle) {
+        Tiles tile = null;
+        switch (finalStyle) {
+            case "buttonBlank" -> tile = Tiles.HOLLOW;
+            case "buttonFilled" -> tile = Tiles.FILLED;
+            case "buttonCrossed" -> tile = Tiles.CROSSED;
+            default -> throw new IllegalStateException("Unexpected value: " + finalStyle);
+        }
+        return tile;
+    }
+
     private void poblateGrid(GridPane gp) {
         int width = nonogram.getColumns();
         int height = nonogram.getRows();
-        addTiles(gp, width, height);
+        addButtons(gp, width, height);
         addConstraints(gp, width, height);
     }
 
-    private void addTiles(GridPane gp, int width, int height) {
+    private void addButtons(GridPane gp, int width, int height) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 System.out.println("adding button at [" + x + ", " + y + "]");
                 this.tiles[y][x] = new Button();
+                this.tiles[y][x].setId(x + ":" + y);
                 gp.add(this.tiles[y][x], x, y);
             }
         }
