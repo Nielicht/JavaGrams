@@ -1,0 +1,11 @@
+.buttons {
+    -fx-text-fill: #816d17;
+    /*-fx-background-image: url(images/buttons/button.png);*/
+    -fx-alignment: center;
+}
+
+.vbox {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+    -fx-background-image: url("images/backgrounds/background3E.jpg");
+}

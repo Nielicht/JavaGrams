@@ -2,141 +2,80 @@ package graphical;
 
 import IO.FileSystem;
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.text.Text;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import logic.Nonogram;
-import logic.Tiles;
+import javafx.stage.StageStyle;
+
+import java.net.URISyntaxException;
 
 public class GUIPlayer extends Application {
-    private Nonogram nonogram;
-    private Button[][] tiles;
-    private Stage mainStage;
+    private static Stage mainStage;
+    private static MediaPlayer mp;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        logicSetup(primaryStage);
-        this.mainStage.setTitle("Nonogram");
-        this.mainStage.setResizable(false);
-        this.mainStage.setWidth(400);
-        this.mainStage.setHeight(400);
-        this.mainStage.setScene(new Scene(setupGrid()));
-        this.mainStage.show();
+    public void start(Stage primaryStage) {
+        setup(primaryStage);
+        loadScene(new MainMenu(), "audio/menu.wav");
+        mainStage.show();
     }
 
-    private void changeScene(Parent root) {
-        this.mainStage.getScene().setRoot(root);
+    private static void setup(Stage primaryStage) {
+        mainStage = primaryStage;
+        mainStage.initStyle(StageStyle.UNDECORATED);
+        mainStage.setTitle("Nonogram");
+        mainStage.setResizable(false);
+        mainStage.setWidth(400);
+        mainStage.setHeight(400);
     }
 
-    private void logicSetup(Stage primaryStage) {
-        this.nonogram = new Nonogram(FileSystem.getResourceString("nFiles/test1.txt"));
-        this.tiles = new Button[this.nonogram.getRows()][this.nonogram.getColumns()];
-        this.mainStage = primaryStage;
+    public static void loadScene(Scene scene, double width, double height) {
+        scene.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().toString().equals("ESCAPE")) mainStage.close();
+        });
+        mainStage.setScene(scene);
+        mainStage.setWidth(width);
+        mainStage.setHeight(height);
+        mainStage.centerOnScreen();
     }
 
-    private GridPane setupGrid() {
-        GridPane gp = new GridPane();
-        gp.getStylesheets().add("css/tiles.css");
-        gp.getStyleClass().add("gridpane");
-        poblateGrid(gp);
-        setupButtons();
-        System.out.println("Number of rows " + gp.getRowCount() + " ; Number of columns: " + gp.getColumnCount());
-        return gp;
+    public static void loadScene(Scene scene) {
+        loadScene(scene, mainStage.getWidth(), mainStage.getHeight());
     }
 
-    private void setupButtons() {
-        for (Button[] tileRow : tiles) {
-            for (Button tile : tileRow) {
-                tile.getStyleClass().clear();
-                tile.getStyleClass().add("buttonBlank");
-                tile.setOnMouseClicked(mouseEvent -> {
-                    if (tile.getStyleClass().size() > 1) throw new RuntimeException("Too many style classes");
-                    String style = tile.getStyleClass().get(0);
-                    String finalStyle = "buttonBlank";
-                    MouseButton mouseButton = mouseEvent.getButton();
+    public static void loadScene(Scene scene, String audio) {
+        loadScene(scene);
+        playAudio(audio);
+    }
 
-                    switch (mouseButton) {
-                        case PRIMARY -> {
-                            if (style.equals("buttonBlank") || style.equals("buttonCrossed"))
-                                finalStyle = "buttonFilled";
-                        }
-                        case SECONDARY -> {
-                            if (style.equals("buttonBlank") || style.equals("buttonFilled"))
-                                finalStyle = "buttonCrossed";
-                        }
-                        default -> {
-                            System.out.println("Not this button DUMBASS");
-                            return;
-                        }
-                    }
+    public static void loadScene(Scene scene, double width, double height, String audio) {
+        loadScene(scene, width, height);
+        playAudio(audio);
+    }
 
-                    tile.getStyleClass().clear();
-                    tile.getStyleClass().add(finalStyle);
-                    gameUpdate(tile.getId(), finalStyle);
-                });
-            }
+    public static void modifyScene(Parent root) {
+        mainStage.getScene().setRoot(root);
+    }
+
+    public static void modifyScene(Parent root, int width, int height) {
+        mainStage.setWidth(width);
+        mainStage.setHeight(height);
+        modifyScene(root);
+    }
+
+    public static void playAudio(String relativePath) {
+        if (mp != null) mp.dispose();
+        try {
+            Media media = new Media(FileSystem.getResourceURI(relativePath).toString());
+            mp = new MediaPlayer(media);
+            mp.play();
+        } catch (URISyntaxException ignored) {
         }
-    }
-
-    private void gameUpdate(String id, String finalStyle) {
-        int x = Integer.parseInt(id.split(":")[0]);
-        int y = Integer.parseInt(id.split(":")[1]);
-
-        this.nonogram.transaction(x, y, styleToTile(finalStyle));
-
-        if (this.nonogram.isSolved()) triggerEnding();
-    }
-
-    private void triggerEnding() {
-        BorderPane bp = new BorderPane(new Text("YOU WON!"));
-        changeScene(bp);
-    }
-
-    private Tiles styleToTile(String finalStyle) {
-        Tiles tile = null;
-        switch (finalStyle) {
-            case "buttonBlank" -> tile = Tiles.HOLLOW;
-            case "buttonFilled" -> tile = Tiles.FILLED;
-            case "buttonCrossed" -> tile = Tiles.CROSSED;
-            default -> throw new IllegalStateException("Unexpected value: " + finalStyle);
-        }
-        return tile;
-    }
-
-    private void poblateGrid(GridPane gp) {
-        int width = nonogram.getColumns();
-        int height = nonogram.getRows();
-        addButtons(gp, width, height);
-        addConstraints(gp, width, height);
-    }
-
-    private void addButtons(GridPane gp, int width, int height) {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                System.out.println("adding button at [" + x + ", " + y + "]");
-                this.tiles[y][x] = new Button();
-                this.tiles[y][x].setId(x + ":" + y);
-                gp.add(this.tiles[y][x], x, y);
-            }
-        }
-    }
-
-    private void addConstraints(GridPane gp, int width, int height) {
-        RowConstraints rowConstraint = new RowConstraints(32);
-        ColumnConstraints columnConstraint = new ColumnConstraints(32);
-        for (int x = 0; x < width; x++) gp.getColumnConstraints().add(columnConstraint);
-        for (int y = 0; y < height; y++) gp.getRowConstraints().add(rowConstraint);
     }
 }

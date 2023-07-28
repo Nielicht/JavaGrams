@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,11 +34,15 @@ public class FileSystem {
         return Path.of(getResourceString(relativePath));
     }
 
-    public static BufferedReader getBReaderFromResource(String relativePath) throws FileNotFoundException {
-        return getBReaderFromPath(getResourceString(relativePath));
+    public static URI getResourceURI(String relativePath) throws URISyntaxException {
+        return getResourcePath(relativePath).toUri();
     }
 
     public static BufferedReader getBReaderFromPath(String absolutePath) throws FileNotFoundException {
         return new BufferedReader(new FileReader(absolutePath));
+    }
+
+    public static BufferedReader getBReaderFromResource(String relativePath) throws FileNotFoundException {
+        return getBReaderFromPath(getResourceString(relativePath));
     }
 }

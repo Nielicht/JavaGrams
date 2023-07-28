@@ -1,0 +1,33 @@
+.buttonBlank {
+    -fx-graphic: url('images/tiles/blank.png');
+}
+
+.buttonFilled {
+    -fx-graphic: url('images/tiles/filled.png');
+}
+
+.buttonCrossed {
+    -fx-graphic: url('images/tiles/crossed.png');
+}
+
+.gridpane {
+    -fx-background-image: url('images/backgrounds/background2.jpg');
+    -fx-alignment: center;
+    -fx-vgap: 1;
+    -fx-hgap: 1;
+    -fx-grid-lines-visible: true;
+}
+
+.text {
+    -fx-fill: white;
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.win {
+    -fx-background-image: url('images/backgrounds/fatToad.png');
+    -fx-background-color: black;
+    -fx-alignment: center;
+}

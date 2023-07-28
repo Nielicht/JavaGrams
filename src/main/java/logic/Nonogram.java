@@ -51,11 +51,17 @@ public class Nonogram {
         return this.board.length;
     }
 
+    /**
+     * @return the legend of the nonogram's rows from up to down
+     */
     public int[][] getRowsLegend() {
         int nRows = this.getRows();
         return Arrays.copyOfRange(this.legend, 0, nRows);
     }
 
+    /**
+     * @return an anticlockwise 90 degree rotated legend of the nonogram's columns, from left to right
+     */
     public int[][] getColumnsLegend() {
         int nRows = this.getRows();
         return Arrays.copyOfRange(this.legend, nRows, this.legend.length);
