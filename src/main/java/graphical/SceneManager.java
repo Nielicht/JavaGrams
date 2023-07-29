@@ -11,7 +11,7 @@ import javafx.stage.StageStyle;
 
 import java.net.URISyntaxException;
 
-public class GUIPlayer extends Application {
+public class SceneManager extends Application {
     private static Stage mainStage;
     private static MediaPlayer mp;
 
@@ -77,5 +77,13 @@ public class GUIPlayer extends Application {
             mp.play();
         } catch (URISyntaxException ignored) {
         }
+    }
+
+    public static double getStageWidth() {
+        return mainStage.getWidth();
+    }
+
+    public static double getStageHeight() {
+        return mainStage.getHeight();
     }
 }

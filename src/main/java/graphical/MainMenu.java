@@ -38,9 +38,9 @@ public class MainMenu extends Scene {
 
     private void setButtonLogic(Button button) {
         button.setOnAction((actionEvent) -> {
-            GUIPlayer.playAudio("audio/button.wav");
+            SceneManager.playAudio("audio/button.wav");
             Timeline tl = new Timeline(new KeyFrame(Duration.seconds(0.8), (actionEvent2) -> {
-                GUIPlayer.loadScene(new Game(button.getId()), "audio/game_low.wav");
+                SceneManager.loadScene(new Game(button.getId()), "audio/game_low.wav");
             }));
             tl.playFromStart();
         });

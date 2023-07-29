@@ -10,20 +10,23 @@
     -fx-graphic: url('images/tiles/crossed.png');
 }
 
-.gridpane {
+.innerPane {
     -fx-background-image: url('images/backgrounds/background2.jpg');
-    -fx-alignment: center;
-    -fx-vgap: 1;
-    -fx-hgap: 1;
-    -fx-grid-lines-visible: true;
 }
 
-.text {
-    -fx-fill: white;
+.nonogram {
+    -fx-alignment: center;
+}
+
+.legend {
+    -fx-alignment: center;
+}
+
+.label {
+    -fx-text-fill: white;
     -fx-pref-width: 32;
     -fx-pref-height: 32;
     -fx-alignment: center;
-    -fx-text-alignment: center;
 }
 
 .win {

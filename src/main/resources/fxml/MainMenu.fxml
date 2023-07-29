@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="687.0" prefWidth="645.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphical.GUIPlayer">
+<AnchorPane prefHeight="687.0" prefWidth="645.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphical.SceneManager">
    <children>
       <Text layoutX="214.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Picross test">
          <font>
