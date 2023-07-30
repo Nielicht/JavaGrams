@@ -11,7 +11,7 @@
 }
 
 .innerPane {
-    -fx-background-image: url('images/backgrounds/background2.jpg');
+    -fx-background-image: url('images/backgrounds/game.jpg');
 }
 
 .nonogram {
@@ -22,15 +22,14 @@
     -fx-alignment: center;
 }
 
+.win {
+    -fx-image: url("images/backgrounds/win.png");
+    -fx-opacity: 0;
+}
+
 .label {
     -fx-text-fill: white;
     -fx-pref-width: 32;
     -fx-pref-height: 32;
-    -fx-alignment: center;
-}
-
-.win {
-    -fx-background-image: url('images/backgrounds/fatToad.png');
-    -fx-background-color: black;
     -fx-alignment: center;
 }

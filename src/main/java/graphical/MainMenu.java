@@ -18,6 +18,7 @@ public class MainMenu extends Scene {
         this.getStylesheets().add("css/selectScreen.css");
         this.getRoot().getStyleClass().add("vbox");
         generateButtons();
+        SceneManager.playAudio("audio/menu.wav", -1);
     }
 
     private void generateButtons() {
@@ -40,7 +41,7 @@ public class MainMenu extends Scene {
         button.setOnAction((actionEvent) -> {
             SceneManager.playAudio("audio/button.wav");
             Timeline tl = new Timeline(new KeyFrame(Duration.seconds(0.8), (actionEvent2) -> {
-                SceneManager.loadScene(new Game(button.getId()), "audio/game_low.wav");
+                SceneManager.loadScene(new Game(button.getId(), "audio/win.wav"));
             }));
             tl.playFromStart();
         });

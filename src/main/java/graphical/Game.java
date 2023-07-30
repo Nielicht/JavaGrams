@@ -1,10 +1,15 @@
 package graphical;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
@@ -14,13 +19,16 @@ import logic.Tiles;
 public class Game extends Scene {
     private Button[][] tiles;
     private Nonogram nonogram;
+    private String audioPath;
 
-    public Game(String nonogramPath) {
+    public Game(String nonogramPath, String audioPath) {
         super(new Pane());
         this.getStylesheets().add("css/game.css");
         this.nonogram = new Nonogram(nonogramPath);
         this.tiles = new Button[this.nonogram.getRows()][this.nonogram.getColumns()];
+        this.audioPath = audioPath;
         setupScene();
+        SceneManager.playAudio("audio/game_low.wav", -1);
     }
 
     private void setupScene() {
@@ -185,13 +193,37 @@ public class Game extends Scene {
     }
 
     private void triggerEnding() {
-        BorderPane bp = new BorderPane();
-        bp.getStylesheets().add("css/game.css");
-        bp.getStyleClass().add("win");
-        SceneManager.loadScene(new Scene(bp), 608, 718, "audio/toad.wav");
-        Timeline tl = new Timeline(new KeyFrame(Duration.seconds(7.5), (actionEvent) -> {
-            SceneManager.loadScene(new MainMenu(), 400, 400, "audio/menu.wav");
+        Parent original = this.getRoot();
+        StackPane sp = new StackPane(original);
+        ImageView image = new ImageView();
+        image.getStyleClass().add("win");
+        sp.getChildren().add(image);
+
+        Timeline delayMenu = new Timeline(new KeyFrame(Duration.seconds(7.5), (actionEvent) -> {
+            SceneManager.loadScene(new MainMenu());
         }));
-        tl.playFromStart();
+
+        GaussianBlur gaussianBlur = new GaussianBlur();
+        original.setEffect(gaussianBlur);
+        gaussianBlur.setRadius(0);
+        Timeline blurAnimation = new Timeline(new KeyFrame(Duration.millis(100), (actionEvent) -> {
+            gaussianBlur.setRadius(gaussianBlur.getRadius() + 0.25);
+        }));
+        blurAnimation.setCycleCount(50);
+
+        FadeTransition fadeTransition = new FadeTransition();
+        fadeTransition.setNode(image);
+        fadeTransition.setDuration(Duration.seconds(0.2));
+        fadeTransition.setFromValue(0);
+        fadeTransition.setToValue(1);
+        Timeline makeTextAppear = new Timeline(new KeyFrame(Duration.seconds(4.3), (actionEvent) -> {
+            fadeTransition.playFromStart();
+        }));
+
+        this.setRoot(sp);
+        delayMenu.playFromStart();
+        blurAnimation.playFromStart();
+        makeTextAppear.playFromStart();
+        SceneManager.playAudio(this.audioPath);
     }
 }

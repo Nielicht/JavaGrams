@@ -8,6 +8,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.net.URISyntaxException;
 
@@ -22,7 +23,7 @@ public class SceneManager extends Application {
     @Override
     public void start(Stage primaryStage) {
         setup(primaryStage);
-        loadScene(new MainMenu(), "audio/menu.wav");
+        loadScene(new MainMenu());
         mainStage.show();
     }
 
@@ -59,21 +60,22 @@ public class SceneManager extends Application {
         playAudio(audio);
     }
 
-    public static void modifyScene(Parent root) {
-        mainStage.getScene().setRoot(root);
-    }
-
-    public static void modifyScene(Parent root, int width, int height) {
-        mainStage.setWidth(width);
-        mainStage.setHeight(height);
-        modifyScene(root);
-    }
-
     public static void playAudio(String relativePath) {
         if (mp != null) mp.dispose();
         try {
             Media media = new Media(FileSystem.getResourceURI(relativePath).toString());
             mp = new MediaPlayer(media);
+            mp.play();
+        } catch (URISyntaxException ignored) {
+        }
+    }
+
+    public static void playAudio(String relativePath, int loop) {
+        if (mp != null) mp.dispose();
+        try {
+            Media media = new Media(FileSystem.getResourceURI(relativePath).toString());
+            mp = new MediaPlayer(media);
+            mp.setCycleCount(loop);
             mp.play();
         } catch (URISyntaxException ignored) {
         }
