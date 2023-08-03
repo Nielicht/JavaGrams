@@ -1,0 +1,37 @@
+.buttonBlank {
+    -fx-graphic: url('images/tiles/gold/blank.png');
+}
+
+.buttonFilled {
+    -fx-graphic: url('images/tiles/gold/filled.png');
+}
+
+.buttonCrossed {
+    -fx-graphic: url('images/tiles/gold/crossed.png');
+}
+
+.win {
+    -fx-image: url("images/backgrounds/win.png");
+    -fx-opacity: 0;
+}
+
+.label {
+    -fx-text-fill: #6e3f0b;
+    -fx-font-size: 16;
+    -fx-font-family: Alagard;
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
+    -fx-alignment: center;
+}
+
+.innerPane {
+    -fx-background-image: url('images/backgrounds/game.jpg');
+}
+
+.nonogram {
+    -fx-alignment: center;
+}
+
+.legend {
+    -fx-alignment: center;
+}

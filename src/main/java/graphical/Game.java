@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -19,19 +18,20 @@ import logic.Tiles;
 public class Game extends Scene {
     private Button[][] tiles;
     private Nonogram nonogram;
-    private String audioPath;
+    private String skinPath;
+    private String winAudio;
 
-    public Game(String nonogramPath, String audioPath) {
+    public Game(String nonogramPath, String winAudio, String skinPath) {
         super(new Pane());
-        this.getStylesheets().add("css/game.css");
         this.nonogram = new Nonogram(nonogramPath);
         this.tiles = new Button[this.nonogram.getRows()][this.nonogram.getColumns()];
-        this.audioPath = audioPath;
+        this.winAudio = winAudio;
+        this.skinPath = skinPath;
         setupScene();
-        SceneManager.playAudio("audio/game_low.wav", -1);
     }
 
     private void setupScene() {
+        this.getStylesheets().add(this.skinPath);
         Pane pane = (Pane) this.getRoot();
         pane.getStyleClass().add("innerPane");
         GridPane nonogram = getNonogram();
@@ -41,6 +41,7 @@ public class Game extends Scene {
         pane.getChildren().add(nonogram);
         pane.getChildren().add(columnsLegend);
         pane.getChildren().add(rowsLegend);
+        SceneManager.playAudio("audio/game_low.wav", -1);
     }
 
     private void relocateNodes(GridPane nonogram, GridPane columnsLegend, GridPane rowsLegend) {
@@ -61,8 +62,8 @@ public class Game extends Scene {
     private GridPane getNonogram() {
         GridPane gp = new GridPane();
         gp.getStyleClass().add("nonogram");
-        fillGrid(gp);
-        setupButtons();
+        setupNonogram(gp);
+        setupLogic();
         return gp;
     }
 
@@ -100,7 +101,7 @@ public class Game extends Scene {
         return gp;
     }
 
-    private void fillGrid(GridPane gp) {
+    private void setupNonogram(GridPane gp) {
         int width = this.nonogram.getColumns();
         int height = this.nonogram.getRows();
         addButtons(gp, width, height);
@@ -151,12 +152,12 @@ public class Game extends Scene {
         return tile;
     }
 
-    private void setupButtons() {
+    private void setupLogic() {
         for (Button[] tileRow : this.tiles) {
             for (Button tile : tileRow) {
                 tile.getStyleClass().clear();
                 tile.getStyleClass().add("buttonBlank");
-                tile.setOnMouseClicked(mouseEvent -> {
+                tile.setOnMousePressed(mouseEvent -> {
                     if (tile.getStyleClass().size() > 1) throw new RuntimeException("Too many style classes");
                     String style = tile.getStyleClass().get(0);
                     String finalStyle = "buttonBlank";
@@ -224,6 +225,6 @@ public class Game extends Scene {
         delayMenu.playFromStart();
         blurAnimation.playFromStart();
         makeTextAppear.playFromStart();
-        SceneManager.playAudio(this.audioPath);
+        SceneManager.playAudio(this.winAudio);
     }
 }
