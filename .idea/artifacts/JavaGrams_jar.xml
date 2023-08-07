@@ -1,0 +1,53 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JavaGrams:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JavaGrams_jar</output-path>
+    <root id="archive" name="JavaGrams.jar">
+      <element id="module-output" name="JavaGrams" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/eclipse/aether/aether-util/1.0.0.v20140518/aether-util-1.0.0.v20140518.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.32/slf4j-api-1.7.32.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/maven/shared/maven-dependency-tree/3.2.1/maven-dependency-tree-3.2.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/maven/plugins/maven-shade-plugin/3.5.0/maven-shade-plugin-3.5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/20.0.1/javafx-fxml-20.0.1-linux.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jdom/jdom2/2.0.6.1/jdom2-2.0.6.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/20.0.1/javafx-graphics-20.0.1-linux.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/ow2/asm/asm/9.5/asm-9.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-fxml/20.0.1/javafx-fxml-20.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/20.0.1/javafx-base-20.0.1-linux.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-utils/3.5.1/plexus-utils-3.5.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/commons-io/commons-io/2.13.0/commons-io-2.13.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-media/20.0.1/javafx-media-20.0.1-linux.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/20.0.1/javafx-controls-20.0.1-linux.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-graphics/20.0.1/javafx-graphics-20.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-base/20.0.1/javafx-base-20.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/vafer/jdependency/2.8.0/jdependency-2.8.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/ow2/asm/asm-commons/9.5/asm-commons-9.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-media/20.0.1/javafx-media-20.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/20.0.1/javafx-controls-20.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/ow2/asm/asm-tree/9.5/asm-tree-9.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/eclipse/aether/aether-api/1.0.0.v20140518/aether-api-1.0.0.v20140518.jar" path-in-jar="/" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/nFiles/silver/test3.txt" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/nFiles/silver/test4.txt" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/nFiles/gold/test6.txt" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/nFiles/gold/test5.txt" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/nFiles/bronze/test2.txt" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/nFiles/bronze/test1.txt" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/selectScreen.css" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/cosmosNonogram.css" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/bronzeNonogram.css" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/images/tiles/gold/filled.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/images/tiles/gold/crossed.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/images/tiles/gold/blank.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/images/tiles/cosmos/filled.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/images/tiles/cosmos/crossed.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/images/tiles/cosmos/blank.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/images/backgrounds/win.png" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/images/backgrounds/menu.jpg" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/css/images/backgrounds/game.jpg" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/audio/win.wav" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/audio/menu.wav" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/audio/game_low.wav" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/audio/button.wav" />
+    </root>
+  </artifact>
+</component>

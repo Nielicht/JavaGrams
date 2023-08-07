@@ -2,15 +2,11 @@ package graphical;
 
 import IO.FileSystem;
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
-
-import java.net.URISyntaxException;
 
 public class SceneManager extends Application {
     private static Stage mainStage;
@@ -62,23 +58,17 @@ public class SceneManager extends Application {
 
     public static void playAudio(String relativePath) {
         if (mp != null) mp.dispose();
-        try {
-            Media media = new Media(FileSystem.getResourceURI(relativePath).toString());
-            mp = new MediaPlayer(media);
-            mp.play();
-        } catch (URISyntaxException ignored) {
-        }
+        Media media = new Media(FileSystem.getResourceURL(relativePath).toString());
+        mp = new MediaPlayer(media);
+        mp.play();
     }
 
     public static void playAudio(String relativePath, int loop) {
         if (mp != null) mp.dispose();
-        try {
-            Media media = new Media(FileSystem.getResourceURI(relativePath).toString());
-            mp = new MediaPlayer(media);
-            mp.setCycleCount(loop);
-            mp.play();
-        } catch (URISyntaxException ignored) {
-        }
+        Media media = new Media(FileSystem.getResourceURL(relativePath).toString());
+        mp = new MediaPlayer(media);
+        mp.setCycleCount(loop);
+        mp.play();
     }
 
     public static double getStageWidth() {

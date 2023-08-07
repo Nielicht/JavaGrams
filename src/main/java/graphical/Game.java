@@ -41,7 +41,7 @@ public class Game extends Scene {
         pane.getChildren().add(nonogram);
         pane.getChildren().add(columnsLegend);
         pane.getChildren().add(rowsLegend);
-        SceneManager.playAudio("audio/game_low.wav", -1);
+        SceneManager.playAudio("/audio/game_low.wav", -1);
     }
 
     private void relocateNodes(GridPane nonogram, GridPane columnsLegend, GridPane rowsLegend) {

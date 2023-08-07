@@ -6,10 +6,11 @@ import logic.Tiles;
 import logic.Nonogram;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 public class CLIPlayer {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         // Nonogram generation
         Nonogram ng = getNonogramFromSelection();
 
@@ -22,7 +23,7 @@ public class CLIPlayer {
         System.out.println("Nonogram solved!");
     }
 
-    private static Nonogram getNonogramFromSelection() throws IOException {
+    private static Nonogram getNonogramFromSelection() throws IOException, URISyntaxException {
         Path[] paths = FileSystem.getFPathsFromResourceFolder("nFiles/");
         String[] choices = new String[paths.length];
 

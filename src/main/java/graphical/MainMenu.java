@@ -3,23 +3,23 @@ package graphical;
 import IO.FileSystem;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 public class MainMenu extends Scene {
 
     public MainMenu() {
         super(new VBox());
-        this.getStylesheets().add("css/selectScreen.css");
+        this.getStylesheets().add("/css/selectScreen.css");
         this.getRoot().getStyleClass().add("vbox");
         addOptions();
-        SceneManager.playAudio("audio/menu.wav", -1);
+        SceneManager.playAudio("/audio/menu.wav", -1);
     }
 
     private void addOptions() {
@@ -35,9 +35,9 @@ public class MainMenu extends Scene {
         gold.getStyleClass().clear();
         gold.setStyle("-fx-text-fill: gold;-fx-font-family: alagard");
 
-        bronze.setOnMousePressed(mouseEvent -> generateButtons("nFiles/bronze", "css/cosmosNonogram.css"));
-        silver.setOnMousePressed(mouseEvent -> generateButtons("nFiles/silver", "css/bronzeNonogram.css"));
-        gold.setOnMousePressed(mouseEvent -> generateButtons("nFiles/gold", "css/bronzeNonogram.css"));
+        bronze.setOnMousePressed(mouseEvent -> generateButtons("/nFiles/bronze", "/css/cosmosNonogram.css"));
+        silver.setOnMousePressed(mouseEvent -> generateButtons("/nFiles/silver", "/css/bronzeNonogram.css"));
+        gold.setOnMousePressed(mouseEvent -> generateButtons("/nFiles/gold", "/css/bronzeNonogram.css"));
 
         vBox.getChildren().addAll(gold, silver, bronze);
     }
@@ -55,16 +55,16 @@ public class MainMenu extends Scene {
                 setButtonLogic(button, skin);
                 vBox.getChildren().add(button);
             }
-        } catch (IOException ignored) {
-            Platform.exit();
+        } catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
         }
     }
 
     private void setButtonLogic(Button button, String skin) {
         button.setOnAction((actionEvent) -> {
-            SceneManager.playAudio("audio/button.wav");
+            SceneManager.playAudio("/audio/button.wav");
             Timeline tl = new Timeline(new KeyFrame(Duration.seconds(0.8), (actionEvent2) -> {
-                SceneManager.loadScene(new Game(button.getId(), "audio/win.wav", skin));
+                SceneManager.loadScene(new Game(button.getId(), "/audio/win.wav", skin));
             }));
             tl.playFromStart();
         });
