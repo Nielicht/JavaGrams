@@ -8,8 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 public class MainMenu extends Scene {
@@ -43,20 +41,16 @@ public class MainMenu extends Scene {
     }
 
     private void generateButtons(String path, String skin) {
-        try {
-            VBox vBox = (VBox) this.getRoot();
-            vBox.getChildren().clear();
-            Path[] files = FileSystem.getFPathsFromResourceFolder(path);
-            for (Path file : files) {
-                Button button = new Button(file.getFileName().toString());
-                button.getStyleClass().clear();
-                button.getStyleClass().add("buttons");
-                button.setId(file.toString());
-                setButtonLogic(button, skin);
-                vBox.getChildren().add(button);
-            }
-        } catch (IOException | URISyntaxException e) {
-            throw new RuntimeException(e);
+        VBox vBox = (VBox) this.getRoot();
+        vBox.getChildren().clear();
+        Path[] files = FileSystem.getFPathsFromResourceFolder(path);
+        for (Path file : files) {
+            Button button = new Button(file.getFileName().toString());
+            button.getStyleClass().clear();
+            button.getStyleClass().add("buttons");
+            button.setId(file.toString());
+            setButtonLogic(button, skin);
+            vBox.getChildren().add(button);
         }
     }
 

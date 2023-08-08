@@ -3,6 +3,7 @@ package logic;
 import IO.FileSystem;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class NonogramUtilities {
@@ -14,7 +15,7 @@ public class NonogramUtilities {
     public static int[][] generateBoard(String nonogramPath) {
         int[][] board = new int[0][0];
 
-        try (BufferedReader br = FileSystem.getBReaderFromPath(nonogramPath)) {
+        try (BufferedReader br = FileSystem.getBReader(nonogramPath)) {
             String[] lines = br.lines().toArray(String[]::new);
 
             int rows = lines.length;
@@ -44,9 +45,8 @@ public class NonogramUtilities {
                 }
                 x = -1;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return board;

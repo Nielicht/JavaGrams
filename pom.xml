@@ -59,7 +59,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        graphical.Main
+                                        graphical.Launcher
                                     </mainClass>
                                 </manifest>
                             </archive>

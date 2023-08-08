@@ -1,15 +1,13 @@
 package IO;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.stream.Stream;
 
@@ -18,23 +16,40 @@ public class FileSystem {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Path[] getFPathsFromResourceFolder(String folderRelPath) throws IOException, URISyntaxException {
-        URL url = getResourceURL(folderRelPath);
-        if (url == null) return null;
-        URI uri = url.toURI();
-        if (uri.getScheme().equals("jar")) return getFPathsFromResourceFolderJar(uri, folderRelPath);
-        Path resourcePath = Path.of(getResourceString(folderRelPath));
-        try (Stream<Path> list = Files.list(resourcePath)) {
-            return list.sorted().toArray(Path[]::new);
+    public static Path[] getFPathsFromResourceFolder(String folderRelPath) {
+        Path[] paths = null;
+
+        try {
+            URL url = getResourceURL(folderRelPath);
+            if (url == null) return null;
+            URI uri = url.toURI();
+            String[] sArray = uri.toString().split("!");
+//            URI uri = URI.create(url.toURI().toString().split("!")[0]);
+            Path folder;
+
+            if (uri.getScheme().equals("jar")) {
+                try (java.nio.file.FileSystem fs = FileSystems.newFileSystem(URI.create(sArray[0]), Collections.emptyMap())) {
+                    folder = fs.getPath(sArray[1]);
+                    paths = getFolderPaths(folder);
+                }
+            } else {
+                folder = Path.of(uri);
+                paths = getFolderPaths(folder);
+            }
+//            try (java.nio.file.FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
+//                folder = fs.getPath(folderRelPath);
+//                paths = getFolderPaths(folder);
+//            }
+        } catch (URISyntaxException | IOException e) {
+            e.printStackTrace();
         }
+
+        return paths;
     }
 
-    private static Path[] getFPathsFromResourceFolderJar(URI uri, String folderRelPath) throws IOException {
-        try (java.nio.file.FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
-            Path resourcePath = fileSystem.getPath(folderRelPath);
-            try (Stream<Path> list = Files.list(resourcePath)) {
-                return list.sorted().toArray(Path[]::new);
-            }
+    private static Path[] getFolderPaths(Path folder) throws IOException {
+        try (Stream<Path> files = Files.list(folder)) {
+            return files.sorted().toArray(Path[]::new);
         }
     }
 
@@ -55,11 +70,22 @@ public class FileSystem {
         return getResourcePath(relativePath).toUri();
     }
 
-    public static BufferedReader getBReaderFromPath(String absolutePath) throws FileNotFoundException {
-        return new BufferedReader(new FileReader(absolutePath));
-    }
+    public static BufferedReader getBReader(String path) {
+        BufferedReader br = null;
+        URL url = getResourceURL(path);
+        URI uri = null;
 
-    public static BufferedReader getBReaderFromResource(String relativePath) throws FileNotFoundException {
-        return getBReaderFromPath(getResourceString(relativePath));
+        try {
+            if (url != null) uri = URI.create(url.toURI().toString().split("!")[0]);
+            if (uri != null && uri.getScheme().equals("jar")) {
+                br = new BufferedReader(new InputStreamReader(FileSystem.class.getResourceAsStream(path)));
+            } else {
+                br = new BufferedReader(new FileReader(path));
+            }
+        } catch (FileNotFoundException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
+        return br;
     }
 }
