@@ -15,7 +15,7 @@ public class NonogramUtilities {
     public static int[][] generateBoard(String nonogramPath) {
         int[][] board = new int[0][0];
 
-        try (BufferedReader br = FileSystem.getBReader(nonogramPath)) {
+        try (BufferedReader br = FileSystem.getResourceBReader(nonogramPath)) {
             String[] lines = br.lines().toArray(String[]::new);
 
             int rows = lines.length;

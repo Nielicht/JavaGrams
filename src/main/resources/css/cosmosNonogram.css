@@ -1,3 +1,8 @@
+@font-face {
+    font-family: alagard;
+    src: url("fonts/alagard.ttf");
+}
+
 .buttonBlank {
     -fx-graphic: url('images/tiles/cosmos/blank.png');
 }

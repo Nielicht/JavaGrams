@@ -1,11 +1,21 @@
+@font-face {
+    font-family: alagard;
+    src: url("fonts/alagard.ttf");
+}
+
 .buttons {
     -fx-text-fill: #816d17;
-    /*-fx-background-image: url(images/buttons/button.png);*/
     -fx-alignment: center;
+    /*-fx-background-image: url(images/buttons/button.png);*/
 }
 
 .vbox {
     -fx-alignment: center;
     -fx-spacing: 10;
     -fx-background-image: url("images/backgrounds/menu.jpg");
+}
+
+.menuLabel {
+    -fx-alignment: center;
+    -fx-font-family: alagard;
 }
