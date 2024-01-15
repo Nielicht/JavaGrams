@@ -16,6 +16,5 @@ in
 
     shellHook = ''
       export LD_LIBRARY_PATH="${libPath}:$LD_LIBRARY_PATH"
-      export JAVA_HOME="${jdk21.home}"
     '';
   }
